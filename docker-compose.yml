@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ghcr.io/datacanvas-iot/datacanvas-back:latest
+    container_name: datacanvas-backend
+    env_file:
+      - backend.env
+    restart: unless-stopped
+    networks:
+      - datacanvas-network
+    expose:
+      - "8000"
+
+  frontend:
+    image: ghcr.io/datacanvas-iot/datacanvas-front:latest
+    container_name: datacanvas-frontend
+    env_file:
+      - frontend.env
+    restart: unless-stopped
+    networks:
+      - datacanvas-network
+    expose:
+      - "3000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: datacanvas-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+    networks:
+      - datacanvas-network
+
+networks:
+  datacanvas-network:
+    driver: bridge
