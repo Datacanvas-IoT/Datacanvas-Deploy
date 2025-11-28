@@ -10,7 +10,7 @@ services:
     networks:
       - datacanvas-network
     expose:
-      - "8000"
+      - "3001"
 
   frontend:
     image: ghcr.io/datacanvas-iot/datacanvas-front:latest
