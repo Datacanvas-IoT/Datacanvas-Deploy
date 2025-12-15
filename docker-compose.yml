@@ -23,6 +23,17 @@ services:
     expose:
       - "3000"
 
+  analytics:
+    image: ghcr.io/datacanvas-iot/datacanvas-analytics:latest
+    container_name: datacanvas-analytics
+    env_file:
+      - analytics.env
+    restart: unless-stopped
+    networks:
+      - datacanvas-network
+    expose:
+      - "8000"
+
   nginx:
     image: nginx:alpine
     container_name: datacanvas-nginx
@@ -33,6 +44,7 @@ services:
     depends_on:
       - backend
       - frontend
+      - analytics
     restart: unless-stopped
     networks:
       - datacanvas-network
